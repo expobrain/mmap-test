@@ -1,6 +1,6 @@
 CC      = gcc
 LD      = gcc
-CFLAGS  = -ggdb3 -Wall -Wextra -Werror -std=gnu11
+CFLAGS  = -ggdb3 -Wall -Wextra -Werror -std=gnu11 -O2
 LDFLAGS = -Wl,--no-undefined
 
 OBJ = mmap-test.o
