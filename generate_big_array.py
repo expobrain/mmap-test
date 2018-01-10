@@ -6,7 +6,7 @@ import array
 def main():
     arr = array.array('H', [i for i in range(16)])
     with open("array.data", "wb") as f:
-        for _ in xrange(256 * 1024 * 1024):
+        for _ in xrange(1 * 1024 * 1024):
             arr.tofile(f)
 
 

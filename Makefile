@@ -1,19 +1,22 @@
 CC      = gcc
 LD      = gcc
-CFLAGS  = -ggdb3 -Wall -Wextra -Werror -std=gnu11 -O2
+CFLAGS  = -ggdb3 -Wall -Wextra -Werror -std=gnu11 -O3
 LDFLAGS = -Wl,--no-undefined
 
-OBJ = mmap-test.o
+OBJ = mmap-test.o multi-mmap-test.o
+TESTS = mmap-test multi-mmap-test
 
-all: mmap-test
+all: $(TESTS)
 
-mmap-test: $(OBJ)
+mmap-test: mmap-test.o
+
+multi-mmap-test: multi-mmap-test.o
 
 %.o: %.c
-	$(CC) $(CFLAGS) -fPIC -c $<
+	$(CC) $(CFLAGS) -c $<
 
 clean:
-	rm $(OBJ)
-	rm mmap-test
+	rm -f $(OBJ)
+	rm -f $(TESTS)
 
 .PHONY: clean
