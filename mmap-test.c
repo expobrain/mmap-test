@@ -8,6 +8,8 @@
 
 typedef uint16_t row_t[16];
 
+static const size_t FILE_SIZE = 256 * 1024 * 1024;
+
 int main(int argc, char **argv)
 {
     (void) argc; (void) argv;
@@ -26,7 +28,13 @@ int main(int argc, char **argv)
         return -1;
     }
 
-    void *addr = mmap(NULL, st.st_size, PROT_READ, MAP_SHARED | MAP_POPULATE, fd, 0);
+    int mmap_flags = MAP_SHARED;
+
+    #ifdef __linux__
+    mmap_flags |= MAP_POPULATE;
+    #endif
+
+    void *addr = mmap(NULL, st.st_size, PROT_READ, mmap_flags, fd, 0);
     if (addr == MAP_FAILED) {
         perror("mmap");
         return -1;
@@ -43,7 +51,7 @@ int main(int argc, char **argv)
     long counter = 0;
 
     clock_t begin = clock();
-    for(size_t i = 0; i < 256 * 1024 * 1024; i++) {
+    for(size_t i = 0; i < FILE_SIZE; i += 2*16) {
         for (size_t c = 0; c < 16; c++) {
             counter += (*row)[c];
         }
@@ -58,7 +66,7 @@ int main(int argc, char **argv)
     row = addr;
     counter = 0;
     begin = clock();
-    for(size_t i = 0; i < 256 * 1024 * 1024; i++) {
+    for(size_t i = 0; i < FILE_SIZE; i += 2*16) {
         for (size_t c = 0; c < 16; c++) {
             counter += (*row)[c];
         }
@@ -72,7 +80,7 @@ int main(int argc, char **argv)
     row = addr;
     counter = 0;
     begin = clock();
-    for(size_t i = 0; i < 256 * 1024 * 1024; i++) {
+    for(size_t i = 0; i < FILE_SIZE; i += 2*16) {
         for (size_t c = 0; c < 16; c++) {
             /* counter += 1; */
             counter += (*row)[c];
