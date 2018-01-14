@@ -1,0 +1,11 @@
+[package]
+name = "mmap-test"
+version = "0.1.0"
+authors = ["Daniele Esposti"]
+
+[profile.release]
+lto = true
+
+[dependencies]
+mmap = "*"
+time = "0.1"
